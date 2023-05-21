@@ -1,6 +1,8 @@
 import requests
 import json
 import pandas as pd
+from bs4 import BeautifulSoup
+
 
 # Define the API endpoint
 api_url = "http://api.tvmaze.com/singlesearch/shows?q=westworld&embed=episodes"
@@ -52,7 +54,12 @@ if response.status_code == 200:
         episode_airtime = episode["airtime"]
         episode_runtime = episode["runtime"]
         episode_rating = episode["rating"]["average"]
+
         episode_summary = episode["summary"]
+        # Remove HTML tags from the summary using BeautifulSoup
+        soup = BeautifulSoup(episode_summary, "html.parser")
+        episode_summary = soup.get_text()
+
         episode_image_medium = episode["image"]["medium"]
         episode_image_original = episode["image"]["original"]
 
@@ -82,12 +89,10 @@ if response.status_code == 200:
     # Create a DataFrame from the episode data
     df = pd.DataFrame(episode_data, columns=column_names)
 
-    # Perform any additional formatting or processing on the DataFrame if needed
-    # For example, removing HTML tags from the Summary column
-    df["Summary"] = df["Summary"].str.replace("<[^<]+?>", "")
+   
     
     # Save DataFrame as CSV
-    output_file = "tvmaze.csv"
+    output_file = "tvmaze1.csv"
     df.to_csv(output_file, index=False)
     
     # Print the formatted DataFrame

@@ -92,7 +92,7 @@ if response.status_code == 200:
    
     
     # Save DataFrame as CSV
-    output_file = "tvmaze1.csv"
+    output_file = "tvmaze.csv"
     df.to_csv(output_file, index=False)
     
     # Print the formatted DataFrame
